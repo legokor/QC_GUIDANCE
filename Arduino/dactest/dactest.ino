@@ -26,7 +26,13 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
   pinMode(CS1,OUTPUT);
+  pinMode(CS2,OUTPUT);
+  pinMode(CS3,OUTPUT);
+  pinMode(CS4,OUTPUT);
    digitalWrite(CS1,HIGH);
+   digitalWrite(CS2,HIGH);
+   digitalWrite(CS3,HIGH);
+   digitalWrite(CS4,HIGH);
   SPI.begin();
 }
 
@@ -34,10 +40,18 @@ void loop() {
   // Serial olvasás
 while (Serial.available()) 
   {
-    for(int i=0;i<4;i++) j[i]=Serial.parseInt();
+    for(int i=0;i<4;i++)
+    {
+      j[i]=Serial.parseInt();
+      j[i]=((float)j[i]/1000)*255;
+    }
   }
-  for(int i=0;i<4;i++) if(j[i]>1000) j[i]=1000;
-DACset((j[0]/1000)*255,CS1); //DAC állítása
+for(int i=0;i<4;i++) if(j[i]>255) j[i]=255;
+ 
+DACset(j[0],CS1); //DAC állítása
+DACset(j[1],CS2);
+DACset(j[2],CS3);
+DACset(j[3],CS4);
 //Soros portra visszaírás
 for(int i=0;i<4;i++)
   {
